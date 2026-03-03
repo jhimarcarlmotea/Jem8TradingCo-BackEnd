@@ -21,6 +21,12 @@ Route::get('/reviews/{review}', [ReviewController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
 
     // Route only accessible to authenticated users
+    // Common client expectation: `/api/user` returns current user
+    Route::get('/user', function(Request $request) {
+        return $request->user();
+    });
+
+    // Backwards-compatible alias
     Route::get('/me', function(Request $request) {
         return $request->user();
     });
