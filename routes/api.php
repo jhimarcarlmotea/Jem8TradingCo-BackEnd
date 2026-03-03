@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +47,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reviews/{review}', [ReviewController::class, 'update']);
     Route::patch('/reviews/{review}', [ReviewController::class, 'update']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
+
+    // Cart routes
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::put('/cart/{cart}', [CartController::class, 'update']);
+    Route::patch('/cart/{cart}', [CartController::class, 'update']);
+    Route::delete('/cart/{cart}', [CartController::class, 'destroy']);
+    Route::delete('/cart/product/{product}', [CartController::class, 'destroyByProduct']);
+    Route::post('/cart/clear', [CartController::class, 'clear']);
 });
