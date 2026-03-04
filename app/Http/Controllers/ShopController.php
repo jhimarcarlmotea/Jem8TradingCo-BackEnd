@@ -14,10 +14,6 @@ class ShopController extends Controller
     public function addToCart(Request $request){
         $user = $request->user();
 
-<<<<<<< HEAD
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-=======
         // if (!$user) {
         //     return response()->json(['message' => 'Unauthorized'], 401);
         // }
@@ -35,7 +31,6 @@ class ShopController extends Controller
 
         if (!$Cart) {
             return response()->json(['message' => 'Failed to add product to cart'], 500);
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
         }
 
         $request->validate([
@@ -93,10 +88,6 @@ class ShopController extends Controller
     }   
 
     // Show single product details with all images.(kukunin yung id ah)
-<<<<<<< HEAD
-    
-=======
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
     public function showProduct($request, $id){
         $product = Product::with('ProductImages')->find($id);
 
@@ -135,11 +126,8 @@ class ShopController extends Controller
         if(!$Cart){
             return response()->json(['message' => 'Cart item not found'], 404);
         }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
         $Cart->quantity = $request->quantity;
         $Cart->save();
 
@@ -149,10 +137,6 @@ class ShopController extends Controller
         ], 200);
 
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
 
     // View current user's cart (kukunin yung id nag user galing sa cookie)
 

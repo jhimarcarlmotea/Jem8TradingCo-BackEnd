@@ -40,27 +40,13 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
     Route::middleware('verified')->get('/dashboard', function() {
         return response()->json(['message' => 'Welcome verified user']);
     });
-<<<<<<< HEAD
-
-
-=======
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
 
     Route::get('/products/{id}', [ShopController::class, 'showProduct']);
     Route::post('/cart/add', [ShopController::class, 'addToCart']);
     Route::delete('/cart/{id}', [ShopController::class, 'deleteFromCart']);
-<<<<<<< HEAD
-    
-
-=======
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
     Route::post('/admin/products', [AdminProductController::class, 'addProduct']);
     Route::get('/admin/products', [AdminProductController::class, 'showAllProducts']);
     Route::get('/admin/products/{id}', [AdminProductController::class, 'showProduct']);
     Route::put('/admin/products/{id}', [AdminProductController::class, 'updateProduct']);
     Route::delete('/admin/products/{id}', [AdminProductController::class, 'deleteProduct']);
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
