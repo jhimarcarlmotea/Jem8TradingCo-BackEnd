@@ -9,13 +9,33 @@ use App\Models\ProductImage;
 
 class ShopController extends Controller
 {
-    // gawin nyo nalang yung mga nasa list jan  
+    // gawin nyo nalang yung mga nasa list jan
     // Add product to cart
     public function addToCart(Request $request){
         $user = $request->user();
 
+<<<<<<< HEAD
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
+=======
+        // if (!$user) {
+        //     return response()->json(['message' => 'Unauthorized'], 401);
+        // }
+
+        $request -> validate([
+            'quantity' => 'required|integer|min:1',
+            'product_id' => 'required|integer|exists:products,id'
+        ]);
+
+        $Cart = Cart::create([
+            'quantity' => $request->quantity,
+            'product_id' => $request->product_id,
+            // 'account_id' => $user->id   // need updates
+        ]);
+
+        if (!$Cart) {
+            return response()->json(['message' => 'Failed to add product to cart'], 500);
+>>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
         }
 
         $request->validate([
@@ -73,14 +93,17 @@ class ShopController extends Controller
     }   
 
     // Show single product details with all images.(kukunin yung id ah)
+<<<<<<< HEAD
     
+=======
+>>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
     public function showProduct($request, $id){
         $product = Product::with('ProductImages')->find($id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
-        
+
         return response()->json([
             'product' => $product,
             'image' => $product->image
@@ -104,14 +127,19 @@ class ShopController extends Controller
     public function updateCartQuantity(Request $request, string $id){
         $request->validate([
             'quantity' => 'required|integer|min:1'
-            
+
         ]);
 
         $Cart = Cart::find($id);
-        
+
         if(!$Cart){
             return response()->json(['message' => 'Cart item not found'], 404);
         }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
         $Cart->quantity = $request->quantity;
         $Cart->save();
 
@@ -119,8 +147,12 @@ class ShopController extends Controller
             'message' => 'Cart quantity updated successfully',
             'cart' => $Cart
         ], 200);
-        
+
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a271ba43ca54be66529b28c99f0f48c1cf3b782a
 
     // View current user's cart (kukunin yung id nag user galing sa cookie)
 
