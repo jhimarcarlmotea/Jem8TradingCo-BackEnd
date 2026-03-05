@@ -22,6 +22,11 @@ Route::post('/blogs', [BlogController::class, 'storeBlog']);
 Route::get('/blogs/{id}', [BlogController::class, 'showAllBlog']);
 Route::put('/blogs/{id}', [BlogController::class, 'blogUpdates']);
 
+// Reviews (public)
+Route::get('/reviews', [ReviewController::class, 'all']);
+Route::get('/reviews/{review}', [ReviewController::class, 'show']);
+Route::get('/products/{product}/reviews', [ReviewController::class, 'index']);
+
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {

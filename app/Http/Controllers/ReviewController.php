@@ -33,6 +33,16 @@ class ReviewController extends Controller
         return response()->json($review);
     }
 
+    // Return all reviews (public)
+    public function all()
+    {
+        $reviews = Review::with('user', 'product')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json($reviews);
+    }
+
     public function store(Request $request, $productId)
     {
         $user = Auth::user();

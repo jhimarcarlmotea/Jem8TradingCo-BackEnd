@@ -90,8 +90,8 @@ class ShopController extends Controller
     }   
 
     // Show single product details with all images.(kukunin yung id ah)
-    public function showProduct($request, $id){
-        $product = Product::with('ProductImages')->find($id);
+    public function showProduct($id){
+        $product = Product::with('images')->find($id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
