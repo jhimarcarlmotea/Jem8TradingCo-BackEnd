@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
@@ -13,23 +15,22 @@ Route::post('/verify', [AccountController::class, 'verifyEmail']);
 Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password', [AccountController::class, 'resetPassword']);
 
-// Public review routes
-Route::get('/products/{product}/reviews', [ReviewController::class, 'index']);
-Route::get('/reviews/{review}', [ReviewController::class, 'show']);
+route::get('/products/{id}', [ShopController::class, 'showProduct']);
+//blogs
+Route::get('/blogs', [BlogController::class, 'indexBlog']);
+Route::post('/blogs', [BlogController::class, 'storeBlog']);
+Route::get('/blogs/{id}', [BlogController::class, 'showAllBlog']);
+Route::put('/blogs/{id}', [BlogController::class, 'blogUpdates']);
+
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
 
     // Route only accessible to authenticated users
-    // Common client expectation: `/api/user` returns current user
-    Route::get('/user', function(Request $request) {
-        return $request->user();
-    });
-
-    // Backwards-compatible alias
-    Route::get('/me', function(Request $request) {
-        return $request->user();
-    });
+    Route::get('/me', [AccountController::class, 'me']);
+    Route::post('/profile/update', [AccountController::class, 'updateProfile']);
+    Route::post('/profile/update-image', [AccountController::class, 'updateProfileImage']);
+    Route::delete('/delete-account', [AccountController::class, 'destroy']);
 
     Route::post('/logout', [AccountController::class, 'logout']);
 
