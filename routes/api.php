@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\UserAddressController;
-
 // Public routes
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/register', [AccountController::class, 'store']);
@@ -29,7 +28,7 @@ Route::get('/products/{product}/reviews', [ReviewController::class, 'index']);
 
 
 // Routes that require authentication
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
     // Account
     Route::get('/me', [AccountController::class, 'me']);

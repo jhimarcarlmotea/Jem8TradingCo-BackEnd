@@ -15,11 +15,22 @@ class UserAddress extends Model
 
     protected $fillable = [
         'user_id',
+        'type',
+
+        // company info
         'company_name',
         'company_role',
         'company_number',
         'company_email',
-        'address',
+
+        // address fields
+        'street',
+        'barangay',
+        'city',
+        'province',
+        'postal_code',
+        'country',
+
         'status',
     ];
 
