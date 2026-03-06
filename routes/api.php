@@ -20,16 +20,19 @@ Route::post('/verify', [AccountController::class, 'verifyEmail']);
 Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password', [AccountController::class, 'resetPassword']);
 
-Route::get('/products/{id}', [ShopController::class, 'showProduct']);
 
 // Reviews (public)
 Route::get('/reviews', [ReviewController::class, 'all']);
 Route::get('/reviews/{review}', [ReviewController::class, 'show']);
 Route::get('/products/{product}/reviews', [ReviewController::class, 'index']);
 
+//Prods
+
+
+
 
 // Routes that require authentication
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
 
     // Account
     Route::get('/me', [AccountController::class, 'me']);
@@ -54,8 +57,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Shop
-    Route::post('/cart/add', [ShopController::class, 'addToCart']);
-    Route::delete('/cart/{id}', [ShopController::class, 'deleteFromCart']);
+    // Route::get('/products', [ShopController::class, 'index']);
+    // Route::get('/products/category/{category}', [ShopController::class, 'productsByCategory']);
+    // Route::post('/products', [ShopController::class, 'addProduct']);
+    // Route::put('/products/{id}', [ShopController::class, 'updateProduct']);
+    
+    //
 
     // Admin Products
     Route::post('/admin/products', [AdminProductController::class, 'addProduct']);
@@ -78,16 +85,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
     // Cart
-    Route::get('/cart', [CartController::class, 'index']);
-    Route::post('/cart', [CartController::class, 'store']);
-    Route::put('/cart/{cart}', [CartController::class, 'update']);
-    Route::patch('/cart/{cart}', [CartController::class, 'update']);
-    Route::delete('/cart/{cart}', [CartController::class, 'destroy']);
-    Route::delete('/cart/product/{product}', [CartController::class, 'destroyByProduct']);
-    Route::post('/cart/clear', [CartController::class, 'clear']);
+    Route::post('/cart/add', [ShopController::class, 'addToCart']);
+    Route::delete('/cart/{id}', [ShopController::class, 'deleteFromCart']);
+    Route::put('/cart/{id}', [ShopController::class, 'updateCartQuantity']);
+    Route::get('/products/{id}', [ShopController::class, 'showProduct']);
+
 
     // Checkout
-    Route::post('/checkout', [CheckoutController::class, 'store']);
+    
 
     // Addresses
     Route::get('/addresses', [UserAddressController::class, 'index']);
@@ -95,4 +100,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/addresses/{id}', [UserAddressController::class, 'show']);
     Route::put('/addresses/{id}', [UserAddressController::class, 'update']);
     Route::delete('/addresses/{id}', [UserAddressController::class, 'destroy']);
+
+
+    //prods
+     Route::post('/products', [ShopController::class, 'addProduct']);
+    Route::put('/products/{id}', [ShopController::class, 'updateProduct']);
+    Route::delete('/products/{id}', [ShopController::class, 'deleteProduct']);
 });

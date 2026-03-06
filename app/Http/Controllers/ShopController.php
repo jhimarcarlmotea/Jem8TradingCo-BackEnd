@@ -12,49 +12,32 @@ class ShopController extends Controller
     // gawin nyo nalang yung mga nasa list jan
     // Add product to cart
     public function addToCart(Request $request){
-        $user = $request->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-            'product_id' => 'required|integer|exists:products,product_id'
-        ]);
-
-        $Cart = Cart::create([
-            'user_id' => $user->id,
-            'quantity' => $request->quantity,
-            'product_id' => $request->product_id,
-            'total' => floatval($product->price) * intval($request->quantity),
-            'status' => 'active',
-        ]);
-
-        if (!$Cart) {
-            return response()->json(['message' => 'Failed to add product to cart'], 500);
-        }
-
-        $request->validate([
-            'quantity'   => 'required|integer|min:1',
-            'product_id' => 'required|integer|exists:products,product_id' // ✅
-        ]);
-
-        $product = Product::find($request->product_id);
-
-        $cart = Cart::create([
-            'quantity'   => $request->quantity,
-            'product_id' => $request->product_id,
-            'user_id'    => $user->id,                              // ✅ matches migration
-            'total'      => $product->price * $request->quantity,  // ✅ auto compute
-            'status'     => 'pending'
-        ]);
-
-        return response()->json([
-            'message' => 'Product added to cart successfully',
-            'cart'    => $cart
-        ], 201);
+    $user = $request->user();
+    
+    if (!$user) {
+        return response()->json(['message' => 'bruhhh'], 401);
     }
+
+    $request->validate([
+        'quantity'   => 'required|integer|min:1',
+        'product_id' => 'required|integer|exists:products,product_id'
+    ]);
+
+    $product = Product::find($request->product_id);
+
+    $cart = Cart::create([
+        'user_id'    => $user->id,
+        'quantity'   => $request->quantity,
+        'product_id' => $request->product_id,
+        'total'      => floatval($product->price) * intval($request->quantity),
+        'status'     => 'pending',
+    ]);
+
+    return response()->json([
+        'message' => 'Product added to cart successfully',
+        'cart'    => $cart
+    ], 201);
+}
 
     public function addProduct(Request $request)
     {
@@ -70,8 +53,12 @@ class ShopController extends Controller
 
         $isSale = $request->boolean('isSale');
 
+        
         // Store image
-        $imagePath = $request->file('image')->store('products', 'public');
+        $imagePath = null;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         $product = Product::create([
             'product_name' => $request->product_name,
