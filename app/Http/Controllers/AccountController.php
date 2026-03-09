@@ -76,25 +76,58 @@ class AccountController extends Controller
             return response()->json(['message' => 'Please verify your email first'], 403);
         }
 
-        $token = $account->createToken('auth_token')->plainTextToken;
+        $token = $account->createToken('jem8_token')->plainTextToken;
+
+        // Set cookie properly
+        $cookie = cookie(
+            'jem8_token', 
+            $token, 
+            60*24*30,   // 30 days
+            '/',        // path
+            null,       // domain null for localhost
+            true,      // secure false for local dev
+            true,       // httpOnly
+            false,      // raw
+            'None'       // sameSite safe for local dev
+        );
 
         return response()->json([
+            'status' => 'success',
             'message' => 'Login successful',
-            'token'   => $token,
-            'account' => $account
-        ]);
+            'token' => $token
+        ])->withCookie($cookie);
     }
-
-    // ==============================
+        // ==============================
     // LOGOUT
     // ==============================
     public function logout(Request $request)
     {
-        if ($request->user()) {
-            $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
+
+        if ($user) {
+
+            // Delete token only if it exists
+            if ($request->user()->currentAccessToken()) {
+                $request->user()->currentAccessToken()->delete();
+            }
         }
 
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully',
+        ])->withCookie(
+            cookie(
+                'jem8_token',
+                '',
+                -1,           // Expire immediately
+                '/',          // MUST match path
+                null,         // MUST match domain
+                true,         // MUST match secure
+                true,         // httpOnly
+                false,
+                'None'        // MUST match SameSite
+            )
+        );
     }
 
     // ==============================
