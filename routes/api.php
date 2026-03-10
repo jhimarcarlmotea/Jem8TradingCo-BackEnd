@@ -123,10 +123,12 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
     Route::delete('/products/{id}', [ShopController::class, 'deleteProduct']);
 
     //admin leadership
-    Route::post('/admin/imgs',[AdminLeadershipController::class, 'index']);
+    Route::prefix('admin')->group(function () {
+        Route::get('/imgs',           [AdminLeadershipController::class, 'adminImgIndex']);
+        Route::post('/imgs/store',    [AdminLeadershipController::class, 'adminImgStore']);
+        Route::get('/imgs/{id}',      [AdminLeadershipController::class, 'adminImgShow']);   // fix: was pointing to wrong method
+        Route::put('/imgs/{id}',      [AdminLeadershipController::class, 'adminImgUpdate']);
+        Route::delete('/imgs/{id}',   [AdminLeadershipController::class, 'adminImgDelete']);
+    });
 
-    //Contact
-    Route::post('/contact', [ContactController::class, 'store']);
-
-
- });
+});
