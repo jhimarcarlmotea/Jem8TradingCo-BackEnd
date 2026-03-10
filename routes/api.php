@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\UserAddressController;
-use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\CategoryController;
 // Public routes
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/register', [AccountController::class, 'store']);
@@ -24,7 +23,8 @@ Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password', [AccountController::class, 'resetPassword']);
 Route::post('/contact', [ContactController::class, 'store']);
 
-
+Route::get('/products/{id}', [ShopController::class, 'showProduct']);
+Route::get('/categories', [CategoryController::class, 'index']);
 // Reviews (public)
 Route::get('/reviews', [ReviewController::class, 'all']);
 Route::get('/reviews/{review}', [ReviewController::class, 'show']);
@@ -90,11 +90,13 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
     // Cart
-    Route::post('/cart/add', [ShopController::class, 'addToCart']);
-    Route::delete('/cart/{id}', [ShopController::class, 'deleteFromCart']);
-    Route::put('/cart/{id}', [ShopController::class, 'updateCartQuantity']);
-    Route::get('/products/{id}', [ShopController::class, 'showProduct']);
-
+    // Route::get('/cart', [CartController::class, 'index']);
+    // Route::post('/cart', [CartController::class, 'store']);
+    // Route::put('/cart/{cart}', [CartController::class, 'update']);
+    // Route::patch('/cart/{cart}', [CartController::class, 'update']);
+    // Route::delete('/cart/{cart}', [CartController::class, 'destroy']);
+    // Route::delete('/cart/product/{product}', [CartController::class, 'destroyByProduct']);
+    // Route::post('/cart/clear', [CartController::class, 'clear']);
 
     // Checkout
 
@@ -117,28 +119,8 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
     Route::put('/addresses/{id}', [UserAddressController::class, 'update']);
     Route::delete('/addresses/{id}', [UserAddressController::class, 'destroy']);
 
-
-    //prods
-    Route::post('/products', [ShopController::class, 'addProduct']);
-    Route::put('/products/{id}', [ShopController::class, 'updateProduct']);
-    Route::delete('/products/{id}', [ShopController::class, 'deleteProduct']);
-
-    //admin leadership
-    Route::prefix('admin')->group(function () {
-        Route::get('/imgs',           [AdminLeadershipController::class, 'adminImgIndex']);
-        Route::post('/imgs/store',    [AdminLeadershipController::class, 'adminImgStore']);
-        Route::get('/imgs/{id}',      [AdminLeadershipController::class, 'adminImgShow']);   // fix: was pointing to wrong method
-        Route::put('/imgs/{id}',      [AdminLeadershipController::class, 'adminImgUpdate']);
-        Route::delete('/imgs/{id}',   [AdminLeadershipController::class, 'adminImgDelete']);
-    });
-
-    // Contact - admin (protected)
-Route::middleware([EnsureTokenIsValid::class])->group(function () {
-    Route::get('/admin/contacts',              [ContactController::class, 'index']);
-    Route::get('/admin/contacts/{id}',         [ContactController::class, 'show']);
-    Route::patch('/admin/contacts/{id}/status',[ContactController::class, 'updateStatus']);
-    Route::delete('/admin/contacts/{id}',      [ContactController::class, 'destroy']);
-    Route::post('/admin/contacts/{id}/reply', [ContactController::class, 'reply']);
-});
-
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show']);
+    Route::put('/categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 });
