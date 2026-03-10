@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->foreign('sender')
                   ->references('id')
-                  ->on('users')
+                  ->on('accounts')
                   ->onDelete('set null');
         });
     }

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\ContactController;
+
 // Public routes
 Route::post('/login', [AccountController::class, 'login']);
 Route::post('/register', [AccountController::class, 'store']);
@@ -63,7 +65,7 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
     // Route::get('/products/category/{category}', [ShopController::class, 'productsByCategory']);
     // Route::post('/products', [ShopController::class, 'addProduct']);
     // Route::put('/products/{id}', [ShopController::class, 'updateProduct']);
-    
+
     //
 
     // Admin Products
@@ -94,7 +96,7 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
 
 
     // Checkout
-    
+
 
     // Admin product management (requires auth)
     Route::prefix('admin')->group(function () {
@@ -122,5 +124,9 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
 
     //admin leadership
     Route::post('/admin/imgs',[AdminLeadershipController::class, 'index']);
-    
+
+    //Contact
+    Route::post('/contact', [ContactController::class, 'store']);
+
+
  });
