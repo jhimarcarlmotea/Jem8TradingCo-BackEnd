@@ -22,6 +22,7 @@ Route::post('/register', [AccountController::class, 'store']);
 Route::post('/verify', [AccountController::class, 'verifyEmail']);
 Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
 Route::post('/reset-password', [AccountController::class, 'resetPassword']);
+Route::post('/contact', [ContactController::class, 'store']);
 
 
 // Reviews (public)
@@ -130,5 +131,14 @@ Route::middleware([EnsureTokenIsValid::class]   )->group(function () {
         Route::put('/imgs/{id}',      [AdminLeadershipController::class, 'adminImgUpdate']);
         Route::delete('/imgs/{id}',   [AdminLeadershipController::class, 'adminImgDelete']);
     });
+
+    // Contact - admin (protected)
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/admin/contacts',              [ContactController::class, 'index']);
+    Route::get('/admin/contacts/{id}',         [ContactController::class, 'show']);
+    Route::patch('/admin/contacts/{id}/status',[ContactController::class, 'updateStatus']);
+    Route::delete('/admin/contacts/{id}',      [ContactController::class, 'destroy']);
+    Route::post('/admin/contacts/{id}/reply', [ContactController::class, 'reply']);
+});
 
 });
